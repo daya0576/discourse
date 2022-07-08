@@ -11,6 +11,15 @@ export default class extends Component {
       return null;
     }
 
-    return I18n.t("user_status.until");
+    const endsAt = moment.tz(this.status.ends_at, this.currentUser.timezone);
+    const now = moment.tz(this.currentUser.timezone);
+    const until = I18n.t("user_status.until");
+    const localeData = moment.localeData(this.currentUser.locale);
+
+    if (now.date() === endsAt.date()) {
+      return `${until} ${endsAt.format(localeData.longDateFormat("LT"))}`;
+    } else {
+      return `${until} ${endsAt.format("MMM D")}`;
+    }
   }
 }

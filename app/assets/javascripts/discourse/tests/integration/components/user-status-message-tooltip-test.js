@@ -135,9 +135,7 @@ discourseModule(
         },
 
         async test(assert) {
-          assert.notOk(
-            query(".status-until").textContent.trim().includes("Until")
-          );
+          assert.notOk(exists(".status-until"));
         },
       }
     );
