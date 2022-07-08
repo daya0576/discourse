@@ -1,0 +1,46 @@
+//.user-status-message-tooltip {
+//  width: 100%;
+//  color: var(--primary);
+//  background-color: var(--secondary);
+//  border: 1px solid var(--primary-low);
+//  display: flex;
+//  box-sizing: border-box;
+//  background-clip: padding-box;
+//  z-index: z("modal", "content");
+//  flex-direction: row;
+//  height: 320px;
+//  max-height: 50vh;
+//  max-width: 420px;
+//}
+
+
+.user-status-message-tooltip {
+  visibility: hidden;
+  display: none;
+  padding: 15px 0;
+  z-index: z("usercard") - 2;
+  position: relative;
+
+  &.is-expanded {
+    animation: 0.33s fadeIn;
+    animation-fill-mode: forwards;
+    display: flex;
+    visibility: visible;
+  }
+
+  .user-status-message-tooltip-container {
+    margin: 0.25em;
+    box-shadow: shadow("card");
+    background-color: var(--secondary);
+    z-index: 1;
+    border-radius: 8px;
+    display: grid;
+    grid-gap: 0.25em;
+
+    @for $i from 1 through 8 {
+      &.col-#{$i} {
+        grid-template-columns: repeat($i, 1fr);
+      }
+    }
+  }
+}

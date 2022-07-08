@@ -1,7 +1,4 @@
 <div class="user-status-message" {{on "mouseover" this.onHover}}>
   {{emoji @status.emoji}}
 </div>
-
-<div class="user-status-message-tooltip">
-  {{@status.description}} – {{@status.description}}
-</div>
+<UserStatusMessageTooltip @status={{@status}} />
