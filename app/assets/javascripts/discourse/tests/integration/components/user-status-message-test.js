@@ -16,9 +16,8 @@ discourseModule(
       },
 
       async test(assert) {
-        assert.equal(
-          query("div.user-status-message").textContent.trim(),
-          "off to dentist"
+        assert.ok(
+          query("img.emoji[title='tooth']", "the status emoji is shown")
         );
       },
     });
