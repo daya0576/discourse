@@ -1,6 +1,6 @@
 import { setupRenderingTest } from "ember-qunit";
 import { hbs } from "ember-cli-htmlbars";
-import { discourseModule, query } from "../../helpers/qunit-helpers";
+import { discourseModule, exists } from "../../helpers/qunit-helpers";
 import componentTest from "../../helpers/component-test";
 
 discourseModule(
@@ -17,7 +17,8 @@ discourseModule(
 
       async test(assert) {
         assert.ok(
-          query("img.emoji[title='tooth']", "the status emoji is shown")
+          exists("img.emoji[title='tooth']"),
+          "the status emoji is shown"
         );
       },
     });
