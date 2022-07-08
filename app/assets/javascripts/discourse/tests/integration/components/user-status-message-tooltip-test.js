@@ -59,7 +59,7 @@ discourseModule(
 
       async test(assert) {
         assert.equal(
-          query("div.user-status-message-tooltip span").textContent.trim(),
+          query(".status-until").textContent.trim(),
           "Until: 12:30pm"
         );
       },
@@ -83,7 +83,7 @@ discourseModule(
 
       async test(assert) {
         assert.equal(
-          query("div.user-status-message-tooltip span").textContent.trim(),
+          query(".status-until").textContent.trim(),
           "Until tomorrow"
         );
       },
@@ -109,8 +109,34 @@ discourseModule(
 
         async test(assert) {
           assert.equal(
-            query("div.user-status-message-tooltip span").textContent.trim(),
+            query(".status-until").textContent.trim(),
             "Until: Feb 3"
+          );
+        },
+      }
+    );
+
+    componentTest(
+      "it doesn't show until datetime if status doesn't have expiration date",
+      {
+        template: hbs`<UserStatusMessageTooltip @status={{this.status}} />`,
+
+        beforeEach() {
+          this.clock = fakeTime(
+            "2100-02-01T08:00:00.000Z",
+            this.currentUser.timezone,
+            true
+          );
+          this.set("status", {
+            emoji: "tooth",
+            description: "off to dentist",
+            ends_at: null,
+          });
+        },
+
+        async test(assert) {
+          assert.notOk(
+            query(".status-until").textContent.trim().includes("Until")
           );
         },
       }
