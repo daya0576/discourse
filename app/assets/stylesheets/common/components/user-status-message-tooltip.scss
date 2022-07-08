@@ -20,11 +20,5 @@
     border-radius: 8px;
     display: grid;
     grid-gap: 0.25em;
-
-    @for $i from 1 through 8 {
-      &.col-#{$i} {
-        grid-template-columns: repeat($i, 1fr);
-      }
-    }
   }
 }
