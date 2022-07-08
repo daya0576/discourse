@@ -1,14 +1,15 @@
-import { setupRenderingTest } from "ember-qunit";
+import componentTest, {
+  setupRenderingTest,
+} from "discourse/tests/helpers/component-test";
 import { hbs } from "ember-cli-htmlbars";
 import { discourseModule, exists } from "../../helpers/qunit-helpers";
-import componentTest from "../../helpers/component-test";
 
 discourseModule(
   "Integration | Component | user-status-message",
   function (hooks) {
     setupRenderingTest(hooks);
 
-    componentTest("it renders", {
+    componentTest("it renders user status emoji", {
       template: hbs`<UserStatusMessage @status={{this.status}} />`,
 
       beforeEach() {
