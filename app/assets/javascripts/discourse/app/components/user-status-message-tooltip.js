@@ -11,12 +11,13 @@ export default class extends Component {
       return null;
     }
 
-    const endsAt = moment.tz(this.status.ends_at, this.currentUser.timezone);
-    const now = moment.tz(this.currentUser.timezone);
+    const timezone = this.currentUser.timezone;
+    const endsAt = moment.tz(this.status.ends_at, timezone);
+    const now = moment.tz(timezone);
     const until = I18n.t("user_status.until");
-    const localeData = moment.localeData(this.currentUser.locale);
 
-    if (now.date() === endsAt.date()) {
+    if (now.isSame(endsAt, "day")) {
+      const localeData = moment.localeData(this.currentUser.locale);
       return `${until} ${endsAt.format(localeData.longDateFormat("LT"))}`;
     } else {
       return `${until} ${endsAt.format("MMM D")}`;
