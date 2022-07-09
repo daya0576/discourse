@@ -1,4 +1,16 @@
-<div class="user-status-message" {{on "mouseover" this.onHover}}>
+<div
+ class="user-status-message"
+ aria-describedby="tooltip"
+ {{on "mouseenter" this.showTooltip}}
+ {{on "mouseleave" this.hideTooltip}}>
   {{emoji @status.emoji}}
 </div>
-<UserStatusMessageTooltip @status={{@status}} />
+<div class="user-status-message-tooltip {{if this.tooltipIsShown "is-expanded"}}" role="tooltip">
+  <div class="user-status-message-tooltip-container">
+    {{emoji @status.emoji}}
+    {{@status.description}}
+    {{#if this.until}}
+      <span class="status-until">{{this.until}}</span>
+    {{/if}}
+  </div>
+</div>
