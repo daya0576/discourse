@@ -5,12 +5,10 @@
  {{on "mouseleave" this.hideTooltip}}>
   {{emoji @status.emoji}}
 </div>
-<div class="user-status-message-tooltip {{if this.tooltipIsShown "is-expanded"}}" role="tooltip">
-  <div class="user-status-message-tooltip-container">
-    {{emoji @status.emoji}}
-    {{@status.description}}
-    {{#if this.until}}
-      <span class="status-until">{{this.until}}</span>
-    {{/if}}
-  </div>
-</div>
+<DTooltip>
+  {{emoji @status.emoji}}
+  {{@status.description}}
+  {{#if this.until}}
+    <span class="status-until">{{this.until}}</span>
+  {{/if}}
+</DTooltip>

@@ -1,24 +1,22 @@
-.user-status-message-tooltip {
+.d-tooltip {
   visibility: hidden;
   display: none;
-  padding: 15px 0;
+  padding: 0.3em;
   z-index: z("usercard") - 2;
   position: relative;
 
   &.is-expanded {
+    visibility: visible;
     animation: 0.33s fadeIn;
     animation-fill-mode: forwards;
     display: flex;
-    visibility: visible;
   }
 
-  .user-status-message-tooltip-container {
-    margin: 0.25em;
+  .d-tooltip-content {
+    margin: 0.5em;
     box-shadow: shadow("card");
     background-color: var(--secondary);
-    z-index: 1;
-    border-radius: 8px;
-    display: grid;
-    grid-gap: 0.25em;
+    border: 1px solid var(--primary-low);
+    border-radius: 4px;
   }
 }

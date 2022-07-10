@@ -44,7 +44,29 @@ discourseModule(
       },
     });
 
-    componentTest("it shows tooltip", {
+    componentTest("doesn't show tooltip if it wasn't expanded", {
+      template: hbs`<UserStatusMessage @status={{this.status}} />`,
+
+      beforeEach() {
+        this.set("status", {
+          emoji: "tooth",
+          description: "off to dentist",
+        });
+      },
+
+      async test(assert) {
+        assert.ok(
+          exists(".user-status-message-tooltip"),
+          "the tooltip is added to the page"
+        );
+        assert.notOk(
+          exists(".user-status-message-tooltip.is-expanded"),
+          "but the tooltip isn't visible"
+        );
+      },
+    });
+
+    componentTest("it shows tooltip on mouseenter", {
       template: hbs`<UserStatusMessage @status={{this.status}} />`,
 
       beforeEach() {
@@ -57,6 +79,10 @@ discourseModule(
       async test(assert) {
         await mouseenter();
 
+        assert.ok(
+          exists(".user-status-message-tooltip.is-expanded"),
+          "the tooltip is shown"
+        );
         assert.ok(
           exists(
             "div.user-status-message-tooltip.is-expanded img.emoji[title='tooth']"
