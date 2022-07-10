@@ -1,8 +1,9 @@
 import Component from "@ember/component";
-import { action } from "@ember/object";
+import { action, computed } from "@ember/object";
 import { createPopper } from "@popperjs/core";
 import { schedule } from "@ember/runloop";
 import { tracked } from "@glimmer/tracking";
+import I18n from "I18n";
 
 export default class extends Component {
   tagName = "";
@@ -15,6 +16,25 @@ export default class extends Component {
 
   willDestroyElement() {
     this._popper.destroy();
+  }
+
+  @computed("status.ends_at")
+  get until() {
+    if (!this.status.ends_at) {
+      return null;
+    }
+
+    const timezone = this.currentUser.timezone;
+    const endsAt = moment.tz(this.status.ends_at, timezone);
+    const now = moment.tz(timezone);
+    const until = I18n.t("user_status.until");
+
+    if (now.isSame(endsAt, "day")) {
+      const localeData = moment.localeData(this.currentUser.locale);
+      return `${until} ${endsAt.format(localeData.longDateFormat("LT"))}`;
+    } else {
+      return `${until} ${endsAt.format("MMM D")}`;
+    }
   }
 
   @action
