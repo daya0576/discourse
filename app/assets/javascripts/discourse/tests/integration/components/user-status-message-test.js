@@ -38,54 +38,8 @@ discourseModule(
 
       async test(assert) {
         assert.ok(
-          exists("img.emoji[title='tooth']"),
+          exists("img.emoji[alt='tooth']"),
           "the status emoji is shown"
-        );
-      },
-    });
-
-    componentTest("doesn't show tooltip if it wasn't expanded", {
-      template: hbs`<UserStatusMessage @status={{this.status}} />`,
-
-      beforeEach() {
-        this.set("status", {
-          emoji: "tooth",
-          description: "off to dentist",
-        });
-      },
-
-      async test(assert) {
-        assert.ok(exists(".d-tooltip"), "the tooltip is added to the page");
-        assert.notOk(
-          exists(".d-tooltip.is-expanded"),
-          "but the tooltip isn't visible"
-        );
-      },
-    });
-
-    componentTest("it shows tooltip on mouseenter", {
-      template: hbs`<UserStatusMessage @status={{this.status}} />`,
-
-      beforeEach() {
-        this.set("status", {
-          emoji: "tooth",
-          description: "off to dentist",
-        });
-      },
-
-      async test(assert) {
-        await mouseenter();
-
-        assert.ok(exists(".d-tooltip.is-expanded"), "the tooltip is shown");
-        assert.ok(
-          exists("div.d-tooltip.is-expanded img.emoji[title='tooth']"),
-          "the status emoji is shown"
-        );
-        assert.ok(
-          query("div.d-tooltip.is-expanded")
-            .textContent.trim()
-            .includes("off to dentist"),
-          "the status description is shown"
         );
       },
     });
@@ -111,7 +65,9 @@ discourseModule(
         async test(assert) {
           await mouseenter();
           assert.equal(
-            query(".status-until").textContent.trim(),
+            document
+              .querySelector("[data-tippy-root] .status-until")
+              .textContent.trim(),
             "Until: 12:30 PM"
           );
         },
@@ -139,7 +95,9 @@ discourseModule(
         async test(assert) {
           await mouseenter();
           assert.equal(
-            query(".status-until").textContent.trim(),
+            document
+              .querySelector("[data-tippy-root] .status-until")
+              .textContent.trim(),
             "Until: Feb 2"
           );
         },
@@ -166,7 +124,9 @@ discourseModule(
 
         async test(assert) {
           await mouseenter();
-          assert.notOk(exists(".status-until"));
+          assert.notOk(
+            document.querySelector("[data-tippy-root] .status-until")
+          );
         },
       }
     );
