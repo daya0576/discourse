@@ -1,8 +1,6 @@
 <div
  class="user-status-message"
- aria-describedby="tooltip"
- {{on "mouseenter" this.showTooltip}}
- {{on "mouseleave" this.hideTooltip}}>
+ aria-describedby="tooltip">
   {{emoji @status.emoji}}
 </div>
 <DTooltip>
