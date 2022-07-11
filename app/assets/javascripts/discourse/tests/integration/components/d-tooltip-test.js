@@ -1,26 +1,53 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
+import { triggerEvent } from "@ember/test-helpers";
+import componentTest, {
+  setupRenderingTest,
+} from "discourse/tests/helpers/component-test";
+import { hbs } from "ember-cli-htmlbars";
+import { discourseModule, query } from "discourse/tests/helpers/qunit-helpers";
 
-module('Integration | Component | d-tooltip', function(hooks) {
+async function mouseenter() {
+  await triggerEvent(query("button"), "mouseenter");
+}
+
+discourseModule("Integration | Component | d-tooltip", function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  componentTest("doesn't show tooltip if it wasn't expanded", {
+    template: hbs`
+      <button>
+        <DTooltip>
+          Tooltip text
+        </DTooltip>
+      </button>
+    `,
 
-    await render(hbs`<DTooltip />`);
+    async test(assert) {
+      assert.notOk(document.querySelector("[data-tippy-root]"));
+    },
+  });
 
-    assert.equal(this.element.textContent.trim(), '');
+  componentTest("it shows tooltip on mouseenter", {
+    template: hbs`
+      <button>
+        <DTooltip>
+          Tooltip text
+        </DTooltip>
+      </button>
+    `,
 
-    // Template block usage:
-    await render(hbs`
-      <DTooltip>
-        template block text
-      </DTooltip>
-    `);
-
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    async test(assert) {
+      await mouseenter();
+      assert.ok(
+        document.querySelector("[data-tippy-root]"),
+        "the tooltip is added to the page"
+      );
+      assert.equal(
+        document
+          .querySelector("[data-tippy-root] .tippy-content")
+          .textContent.trim(),
+        "Tooltip text",
+        "the tooltip content is correct"
+      );
+    },
   });
 });
