@@ -1,12 +1,10 @@
-<div
- class="user-status-message"
- aria-describedby="tooltip">
+<div class="user-status-message" aria-describedby="tooltip">
   {{emoji @status.emoji}}
+  <DTooltip>
+    {{emoji @status.emoji}}
+    {{@status.description}}
+    {{#if this.until}}
+      <span class="status-until">{{this.until}}</span>
+    {{/if}}
+  </DTooltip>
 </div>
-<DTooltip>
-  {{emoji @status.emoji}}
-  {{@status.description}}
-  {{#if this.until}}
-    <span class="status-until">{{this.until}}</span>
-  {{/if}}
-</DTooltip>

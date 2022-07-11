@@ -39,9 +39,14 @@ export default class DiscourseTooltip extends Component {
 
   _initPopper() {
     schedule("afterRender", () => {
-      const popperAnchor = document.querySelector(".user-status-message");
-      const tooltip = document.querySelector(".d-tooltip");
-      this._popper = createPopper(popperAnchor, tooltip);
+      // Ember.ViewUtils.getViewBounds is a private API, but
+      // it won't be broken without a public deprecation warning,
+      // see: https://stackoverflow.com/a/50125938/3206146
+      // eslint-disable-next-line no-undef
+      const viewBounds = Ember.ViewUtils.getViewBounds(this);
+      const element = viewBounds.firstNode;
+      const parent = viewBounds.parentElement;
+      this._popper = createPopper(parent, element);
     });
   }
 }
