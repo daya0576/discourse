@@ -26,7 +26,11 @@ export default class DiscourseTooltip extends Component {
       const viewBounds = Ember.ViewUtils.getViewBounds(this);
       const element = viewBounds.firstNode;
       const parent = viewBounds.parentElement;
-      this._tippyInstance = tippy(parent, { content: element, arrow: false });
+      this._tippyInstance = tippy(parent, {
+        content: element,
+        theme: "d-tooltip",
+        arrow: false,
+      });
     });
   }
 }
