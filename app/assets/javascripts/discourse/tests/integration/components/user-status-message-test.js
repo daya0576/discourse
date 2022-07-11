@@ -55,12 +55,9 @@ discourseModule(
       },
 
       async test(assert) {
-        assert.ok(
-          exists(".user-status-message-tooltip"),
-          "the tooltip is added to the page"
-        );
+        assert.ok(exists(".d-tooltip"), "the tooltip is added to the page");
         assert.notOk(
-          exists(".user-status-message-tooltip.is-expanded"),
+          exists(".d-tooltip.is-expanded"),
           "but the tooltip isn't visible"
         );
       },
@@ -79,18 +76,13 @@ discourseModule(
       async test(assert) {
         await mouseenter();
 
+        assert.ok(exists(".d-tooltip.is-expanded"), "the tooltip is shown");
         assert.ok(
-          exists(".user-status-message-tooltip.is-expanded"),
-          "the tooltip is shown"
-        );
-        assert.ok(
-          exists(
-            "div.user-status-message-tooltip.is-expanded img.emoji[title='tooth']"
-          ),
+          exists("div.d-tooltip.is-expanded img.emoji[title='tooth']"),
           "the status emoji is shown"
         );
         assert.ok(
-          query("div.user-status-message-tooltip.is-expanded")
+          query("div.d-tooltip.is-expanded")
             .textContent.trim()
             .includes("off to dentist"),
           "the status description is shown"
