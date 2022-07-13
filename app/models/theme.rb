@@ -383,16 +383,30 @@ class Theme < ActiveRecord::Base
 
   def self.resolve_baked_field(theme_ids, target, name)
     if target == :extra_js
-      require_rebake = ThemeField.where(theme_id: theme_ids, target_id: Theme.targets[:extra_js]).
-        where("compiler_version <> ?", Theme.compiler_version)
-      require_rebake.each { |tf| tf.ensure_baked! }
-      require_rebake.map(&:theme_id).uniq.each do |theme_id|
-        Theme.find(theme_id).update_javascript_cache!
+      rebaked_theme_ids = []
+
+      theme_ids.each do |theme_id|
+        DistributedMutex.synchronize("rebake_fields_#{theme_id}") do
+          require_rebake = ThemeField
+            .where(theme_id: theme_id, target_id: Theme.targets[:extra_js])
+            .where("compiler_version < ?", Theme.compiler_version)
+
+          if require_rebake.any?
+            require_rebake.each(&:ensure_baked!)
+            Theme.find(theme_id).update_javascript_cache!
+
+            rebaked_theme_ids << theme_id
+          end
+        end
       end
-      caches = JavascriptCache.where(theme_id: theme_ids)
-      caches = caches.sort_by { |cache| theme_ids.index(cache.theme_id) }
+
+      caches = JavascriptCache
+        .where(theme_id: rebaked_theme_ids)
+        .sort_by { |cache| theme_ids.index(cache.theme_id) }
+
       return caches.map { |c| "<script defer src='#{c.url}' data-theme-id='#{c.theme_id}'></script>" }.join("\n")
     end
+
     list_baked_fields(theme_ids, target, name).map { |f| f.value_baked || f.value }.join("\n")
   end
 
